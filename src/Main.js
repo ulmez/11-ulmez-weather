@@ -1,8 +1,6 @@
 import React from 'react';
 
 export class Main extends React.Component {
-    
-
     render() {
         return (
             this.props.weather.weather.length === 0 ?

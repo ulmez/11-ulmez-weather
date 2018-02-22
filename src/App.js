@@ -1,5 +1,8 @@
 import React from 'react';
 import { Main } from './Main';
+import { LinkBar } from './LinkBar';
+import { Week } from './Week';
+import { ThreeHour } from './ThreeHour';
 
 export class App extends React.Component {
     // fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&APPID=d87f99239bd5f3e1c122014b3df96724`)
@@ -10,12 +13,15 @@ export class App extends React.Component {
             weather: [],
             sunrise: "",
             sunset: "",
-            metric: true
+            metric: true,
+            component: 0
         }
         this.test = this.test.bind(this);
         this.test();
 
         this.didYouClickMe = this.didYouClickMe.bind(this);
+        this.getSomethingNicePlease = this.getSomethingNicePlease.bind(this);
+        //this.enAnnan = this.enAnnan.bind(this);
     }
 
     didYouClickMe(metric) {
@@ -106,8 +112,35 @@ export class App extends React.Component {
         });
     }
 
+    getSomethingNicePlease(element) {
+        // console.log(element.target.id);
+        // return <h1>Griskulting</h1>;
+        // this.setState({component: <h1>Something else</h1>});
+        this.setState({component: element.target.id}, () => {
+            console.log(this.state.component);
+        });
+    }
+
+    getComponent(comp) {
+        return comp;
+    }
+
+    listOfComponents() {
+        return [
+                <Main weather={this.state} onClick={this.didYouClickMe} />,
+                <Week />,
+                <ThreeHour />
+            ];
+    }
+
     render() {
-        return <Main weather={this.state} onClick={this.didYouClickMe} />;
+        return (
+                <div>
+                    <LinkBar onClick={this.getSomethingNicePlease} />
+                    {this.listOfComponents()[this.state.component]}
+                </div>
+            );
+        // return <Main weather={this.state} onClick={this.didYouClickMe} />;
         /*return (
             this.state.weather.length === 0 ? <h1>Loading...</h1> : <div>
                 <div>
