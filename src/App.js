@@ -137,7 +137,7 @@ export class App extends React.Component {
             // https://api.openweathermap.org/data/2.5/forecast/daily?lat=35&lon=139&cnt=10
             // api.openweathermap.org/data/2.5/forecast/daily?lat={lat}&lon={lon}&cnt={cnt}
             // https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&APPID=d87f99239bd5f3e1c122014b3df96724`)
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
             // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
             // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
             .then(res => res.json())
