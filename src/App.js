@@ -14,30 +14,32 @@ export class App extends React.Component {
             sunrise: "",
             sunset: "",
             metric: true,
-            component: 0
+            component: 0,
+            week: []
         }
-        this.test = this.test.bind(this);
-        this.test();
-
-        this.didYouClickMe = this.didYouClickMe.bind(this);
-        this.getSomethingNicePlease = this.getSomethingNicePlease.bind(this);
+        this.fetchDefaultWeather = this.fetchDefaultWeather.bind(this);
+        this.fetchMainWeather = this.fetchMainWeather.bind(this);
+        this.getNavComponent = this.getNavComponent.bind(this);
+        this.fetchWeekWeather = this.fetchWeekWeather.bind(this);
         //this.enAnnan = this.enAnnan.bind(this);
+
+        //this.fetchDefaultWeather();
     }
 
-    didYouClickMe(metric) {
+    fetchMainWeather(metric) {
         //this.props.weather.weather.metric = true;
         //this.state.metric ? this.setState({metric: false}) : this.setState({metric: true});
         //console.log(this.state.metric);
-        this.test(metric);
+        this.fetchDefaultWeather(metric);
     }
 
-    /*componentDidMount() {
-        this.test();
-    }*/
+    componentDidMount() {
+        this.fetchDefaultWeather();
+    }
     
     /*componentDidUpdate(prevProps, prevState) {
         if (this.state.weather !== prevState.weather) {
-          this.test();  
+          this.fetchDefaultWeather();  
         }
     }*/
 
@@ -45,7 +47,7 @@ export class App extends React.Component {
         this.setState({metric: celsius}); 
     }
 
-    test() {
+    fetchDefaultWeather() {
         /*this.setState({weather: ['uno', 'doz', 'trez']}, () => {
             console.log(this.state.weather);
         });*/
@@ -112,7 +114,8 @@ export class App extends React.Component {
         });
     }
 
-    getSomethingNicePlease(element) {
+    getNavComponent(element) {
+        this.fetchWeekWeather();
         // console.log(element.target.id);
         // return <h1>Griskulting</h1>;
         // this.setState({component: <h1>Something else</h1>});
@@ -121,26 +124,61 @@ export class App extends React.Component {
         });
     }
 
-    getComponent(comp) {
-        return comp;
-    }
-
     listOfComponents() {
         return [
-                <Main weather={this.state} onClick={this.didYouClickMe} />,
-                <Week />,
+                <Main weather={this.state} onClick={this.fetchMainWeather} />,
+                <Week week={this.state.week} />,
                 <ThreeHour />
             ];
+    }
+
+    fetchWeekWeather() {
+        navigator.geolocation.getCurrentPosition((position) => {
+            // https://api.openweathermap.org/data/2.5/forecast/daily?lat=35&lon=139&cnt=10
+            // api.openweathermap.org/data/2.5/forecast/daily?lat={lat}&lon={lon}&cnt={cnt}
+            // https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&APPID=d87f99239bd5f3e1c122014b3df96724`)
+            // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
+            // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
+            .then(res => res.json())
+            .then(res => {
+                this.setState({week: res}, () => {
+                    console.log(this.state.week);
+                });
+                //let newDate = new Date();
+                //let hours = '';
+                //console.log(newDate.setTime(res.list[0].dt * 1000));
+                
+                //let day = newDate.setTime(res.list[0].dt * 1000);
+                //day = newDate.getUTCDate();
+                
+                // console.log(day);
+                // if(res.list.dt)
+                /*res.list.map((e) => {
+                    let newDate = new Date();
+                    let day = newDate.setTime(e.dt * 1000);
+                    const dayText = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                    day = newDate.getDay();
+                    console.log(dayText[day]);
+                    //if()
+                    return day;
+                });*/
+                //return res;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        });
     }
 
     render() {
         return (
                 <div>
-                    <LinkBar onClick={this.getSomethingNicePlease} />
+                    <LinkBar onClick={this.getNavComponent} />
                     {this.listOfComponents()[this.state.component]}
                 </div>
             );
-        // return <Main weather={this.state} onClick={this.didYouClickMe} />;
+        // return <Main weather={this.state} onClick={this.fetchMainWeather} />;
         /*return (
             this.state.weather.length === 0 ? <h1>Loading...</h1> : <div>
                 <div>

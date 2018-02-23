@@ -9,10 +9,16 @@ export class Main extends React.Component {
                 <div weather={this.props.weather}>
                     {JSON.stringify(this.props.weather)}
                     <div>
-                        <button onClick={this.props.onClick}>Celsius</button>
+                        <button onClick={this.props.onClick}>{this.props.weather.metric ? 'Get Celsius' : 'Get Farenheit'}</button>
                     </div>
                     <div>
                         <h1>Weather Statistics</h1>
+                    </div>
+                    <div>
+                        <h3>Weather icon</h3>
+                    </div>
+                    <div>
+                        <img src={'https://openweathermap.org/img/w/' + this.props.weather.weather.weather[0].icon + '.png'} alt={this.props.weather.weather.weather[0].icon} />
                     </div>
                     <div>
                         <h3>Place</h3>
