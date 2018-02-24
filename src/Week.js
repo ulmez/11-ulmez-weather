@@ -1,13 +1,7 @@
 import React from 'react';
 
 export class Week extends React.Component {
-    /*componentDidMount() {
-        this.fetchWeekWeather();
-    }*/
-
     render() {
-        //const data = this.props.week.list;
-        //const listItems = data.map((d, i) => <li key={i}>{d.dt}</li>);
         const dayTexts = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const MonthTexts = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -16,7 +10,7 @@ export class Week extends React.Component {
                 <h1>Loading...</h1>
             :
                 <div week={this.props.week}>
-                    <h1>Week Component</h1>
+                    <h1>Diagnose Weather Statistics</h1>
                     <div>
                         <table className="table table-sm">
                             <thead className="table-info">
@@ -31,15 +25,18 @@ export class Week extends React.Component {
                             </thead>
                             {this.props.week.list.map((e, i) => {
                                 let newDate = new Date();
+
                                 newDate.setTime(e.dt * 1000);
+
                                 let day = newDate.getDay();
                                 let monthDay = newDate.getDate();
                                 let month = newDate.getMonth();
                                 let hour = newDate.getHours();
                                 let minute = newDate.getMinutes();
-                                // console.log(day);
+
                                 hour = hour < 10 ? '0' + hour : hour;
                                 minute = minute < 10 ? '0' + minute : minute;
+                                
                                 return (
                                     <tbody key={i}>
                                         <tr>
