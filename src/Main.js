@@ -26,7 +26,7 @@ export class Main extends React.Component {
                                     <td><img src={'https://openweathermap.org/img/w/' + this.props.weather.weather.weather[0].icon + '.png'} alt={this.props.weather.weather.weather[0].icon} /></td>
                                     <td>{this.props.weather.weather.weather[0].description}</td>
                                     <td>{this.props.weather.weather.name}</td>
-                                    <td><table><tr><td style={{padding: '0', margin: '0', border: '0'}}><b>Long:</b> {this.props.weather.weather.coord.lon}</td></tr><tr><td style={{padding: '0', margin: '0', border: '0'}}><b>lat:</b> {this.props.weather.weather.coord.lat}</td></tr></table></td>
+                                    <td><table><tbody><tr><td style={{padding: '0', margin: '0', border: '0'}}><b>Long:</b> {this.props.weather.weather.coord.lon}</td></tr><tr><td style={{padding: '0', margin: '0', border: '0'}}><b>lat:</b> {this.props.weather.weather.coord.lat}</td></tr></tbody></table></td>
                                     <td>{this.props.weather.weather.main.temp} °{this.props.weather.metric ? 'C' : 'F'}</td>
                                 </tr>
                             </tbody>
