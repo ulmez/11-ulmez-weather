@@ -26,11 +26,11 @@ export class App extends React.Component {
         //this.fetchDefaultWeather();
     }
 
-    fetchMainWeather(metric) {
+    fetchMainWeather() {
         //this.props.weather.weather.metric = true;
         //this.state.metric ? this.setState({metric: false}) : this.setState({metric: true});
         //console.log(this.state.metric);
-        this.fetchDefaultWeather(metric);
+        this.fetchDefaultWeather();
     }
 
     componentDidMount() {
@@ -42,9 +42,10 @@ export class App extends React.Component {
           this.fetchDefaultWeather();  
         }
     }*/
-
+    
     setMetric(celsius) {
-        this.setState({metric: celsius}); 
+        console.log('Clicked...');
+        // this.setState({metric: celsius}); 
     }
 
     fetchDefaultWeather() {
@@ -90,7 +91,9 @@ export class App extends React.Component {
                         console.log(this.state.sunset);
                     });
 
-                    this.state.metric ? this.setState({metric: false}) : this.setState({metric: true});
+                    /*if(metric || this.state.metric === '') {
+                        this.state.metric || this.state.metric === '' ? this.setState({metric: false}) : this.setState({metric: true});
+                    }*/
                 });
             })
             .catch(err => {
@@ -115,29 +118,42 @@ export class App extends React.Component {
     }
 
     getNavComponent(element) {
-        this.fetchWeekWeather();
+        //this.fetchWeekWeather();
         // console.log(element.target.id);
         // return <h1>Griskulting</h1>;
         // this.setState({component: <h1>Something else</h1>});
-        this.setState({component: element.target.id}, () => {
-            console.log(this.state.component);
-        });
+
+        if(element.target.id !== '2') {
+            this.fetchWeekWeather(false);
+            //console.log(element.target.id);
+            this.setState({component: element.target.id}, () => {
+                console.log(this.state.component);
+            });
+        } else {
+            this.setState({metric: this.state.metric ? false : true}, () => {
+                console.log(this.state.metric);
+                this.fetchMainWeather();
+                this.fetchWeekWeather();
+            });
+        }
     }
 
     listOfComponents() {
         return [
                 <Main weather={this.state} onClick={this.fetchMainWeather} />,
-                <Week week={this.state.week} />,
+                <Week weather={this.state} week={this.state.week} />,
                 <ThreeHour />
             ];
     }
 
     fetchWeekWeather() {
         navigator.geolocation.getCurrentPosition((position) => {
+            const unit = this.state.metric ? 'metric' : 'imperial';
+
             // https://api.openweathermap.org/data/2.5/forecast/daily?lat=35&lon=139&cnt=10
             // api.openweathermap.org/data/2.5/forecast/daily?lat={lat}&lon={lon}&cnt={cnt}
             // https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=${unit}&APPID=d87f99239bd5f3e1c122014b3df96724`)
             // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
             // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=d87f99239bd5f3e1c122014b3df96724`)
             .then(res => res.json())
@@ -174,7 +190,7 @@ export class App extends React.Component {
     render() {
         return (
                 <div>
-                    <LinkBar onClick={this.getNavComponent} />
+                    <LinkBar metric={this.state.metric} onClick={this.getNavComponent} />
                     {this.listOfComponents()[this.state.component]}
                 </div>
             );

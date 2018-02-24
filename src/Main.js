@@ -36,13 +36,13 @@ export class Main extends React.Component {
                         <h3>Temperature</h3>
                     </div>
                     <div>
-                        {this.props.weather.weather.main.temp} °{this.props.weather.metric ? 'F' : 'C'}
+                        {this.props.weather.weather.main.temp} °{this.props.weather.metric ? 'C' : 'F'}
                     </div>
                     <div>
                         <h3>Wind speed</h3>
                     </div>
                     <div>
-                        {this.props.weather.weather.wind.speed} {this.props.weather.metric ? 'mph' : 'm/s'}
+                        {this.props.weather.weather.wind.speed} {this.props.weather.metric ? 'm/s' : 'mph'}
                     </div>
                     <div>
                         <h3>Humidity</h3>
